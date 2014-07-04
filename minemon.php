@@ -37,14 +37,16 @@ function bladeChip($bladeStatus) {
 }
 
 function main() {
-  if ( !file_exists( "cluster_config.json" ) ) {
+  $cluster_config = dirname( $_SERVER["SCRIPT_FILENAME"] )."/cluster_config.json";
+
+  if ( !file_exists( $cluster_config ) ) {
     echo "cluster_config.json not found. Please create it and restart.\n";
     echo "Press Ctrl+C to exit.\n";
     while ( true ) {
       sleep(5);
     }
   }
-  $conf = json_decode( file_get_contents( "cluster_config.json" ) );
+  $conf = json_decode( file_get_contents( $cluster_config ) );
   date_default_timezone_set( 'America/Chicago' );
   ncurses_init();
   $window = ncurses_newwin(0,0,0,0);
