@@ -37,6 +37,13 @@ function bladeChip($bladeStatus) {
 }
 
 function main() {
+  if ( !file_exists( "cluster_config.json" ) ) {
+    echo "cluster_config.json not found. Please create it and restart.\n";
+    echo "Press Ctrl+C to exit.\n";
+    while ( true ) {
+      sleep(5);
+    }
+  }
   $conf = json_decode( file_get_contents( "cluster_config.json" ) );
   date_default_timezone_set( 'America/Chicago' );
   ncurses_init();
