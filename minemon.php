@@ -12,13 +12,18 @@ function bladeStatus($blade_ip, $blade_port ) {
 
 function bladeReset($blade,$config) {
   $postfields=array();
+
+  $serverPorts = $config->Ports; 
+  if (isset($blade->serverPorts))
+     $serverPorts = $blade->serverPorts;
+
   $postfields["JMIP"] = $blade->ip;
   $postfields["JMSK"] = $config->Mask;
   $postfields["JGTW"] = $config->Gateway;
   $postfields["WPRT"] = $blade->port;
   $postfields["PDNS"] = $config->PrimaryDNS;
   $postfields["SDNS"] = $config->SecondaryDNS;
-  $postfields["MPRT"] = $config->Ports;
+  $postfields["MPRT"] = $serverPorts;
   $postfields["MURL"] = $config->ServerAddresses;
   $postfields["USPA"] = $config->UserPass;
 
@@ -50,6 +55,17 @@ function main() {
   date_default_timezone_set( 'America/Chicago' );
   ncurses_init();
   $window = ncurses_newwin(0,0,0,0);
+
+  $have_reset = false;
+  foreach( $conf->blades as $blade ) {
+    if ( isset( $blade->reset ) ) {
+       bladeReset( $blade, $conf );
+      $have_reset = true;
+    }
+  }
+  if ( $have_reset ) {
+    die( "I've reset a blade!" );
+  }
   
   foreach( $conf->blades as $blade ) {
     $blade->speedTotal = 0;
