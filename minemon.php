@@ -102,8 +102,13 @@ function main() {
       }
       $failCount = $blade->failCount;
       $resetCount = $blade->resetCount;
+      if (!is_numeric($speed)) $speed = -1;
       
-      echo "blade ".str_pad($blade->id,2," ",STR_PAD_LEFT).": ".str_pad(number_format($speed),7)." [".str_pad(number_format($average),7)." avg] [chip:$chip] [failcount:$failCount] [resetCount:$resetCount]";
+      echo "blade "
+      	   .str_pad($blade->id,2," ",STR_PAD_LEFT)
+           .": ".str_pad(number_format($speed),7)
+           ." [".str_pad(number_format($average),7)
+           ." avg] [chip:$chip] [failcount:$failCount] [resetCount:$resetCount]";
       
       if ( $failCount >= $blade->maxFails ) {
 	bladeReset( $blade , $conf );
